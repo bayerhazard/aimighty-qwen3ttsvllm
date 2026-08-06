@@ -11,7 +11,7 @@ metadata:
   description: Qwen3-TTS-12Hz-1.7B via vLLM-Omni — OpenAI-compatible /v1/audio/speech, 10 languages
   appid: aimqwen3ttsvllm
   title: AIM Qwen3 TTS 1.7B
-  version: '1.0.2'
+  version: '1.0.3'
   categories:
     - Audio
 
@@ -25,7 +25,7 @@ entrances:
     authLevel: internal
 
 spec:
-  versionName: '1.0.2'
+  versionName: '1.0.3'
   fullDescription: |
     **Qwen3-TTS-12Hz-1.7B** — Alibaba's latest open text-to-speech model, served via vLLM-Omni with a full OpenAI-compatible API.
 
@@ -54,6 +54,9 @@ spec:
     RAM: 8 GB, CPU: 2 cores
     Disk: 20 GB (model cache, HF_HOME)
   upgradeDescription: |
+    v1.0.3: Lower VLLM_OMNI_GPU_UTIL 0.9 -> 0.3. At 0.9 the Qwen3 stage-0 grabbed
+    ~21 GiB count-based on the shared 24 GB GPU, OOM-ing the audio-tokenizer stage.
+    0.3 reserves ~7 GiB so the app fits alongside the Voxtral TTS 14 GiB slice.
     v1.0.2: Removed manual check-auth init container (caused "Duplicate value:
     check-auth" with the webhook-injected one). Keep webhook injection like the
     voxtral app; the earlier check-auth exit-1 was transient.
