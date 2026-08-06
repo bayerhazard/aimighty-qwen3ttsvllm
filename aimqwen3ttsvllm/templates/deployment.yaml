@@ -266,6 +266,7 @@ spec:
           - "--gpu-memory-utilization"
           - "$(VLLM_OMNI_GPU_UTIL)"
           - "--trust-remote-code"
+          - "--enforce-eager"
           - "--omni"
         env:
           - name: HF_HOME
