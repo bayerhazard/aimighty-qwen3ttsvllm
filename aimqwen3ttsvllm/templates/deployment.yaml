@@ -236,9 +236,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: aimqwen3ttsvllm
-    applications.app.bytetrade.io/name: aimqwen3ttsvllm
-    applications.app.bytetrade.io/owner: {{ .Release.Namespace | trimSuffix "-aimighty" }}
-    applications.app.bytetrade.io/raw-app-name: aimqwen3ttsvllm
 spec:
   replicas: {{ .Values.workloads.aimqwen3ttsvllm.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
@@ -251,11 +248,11 @@ spec:
     metadata:
       labels:
         app: aimqwen3ttsvllm
-        applications.app.bytetrade.io/name: aimqwen3ttsvllm
-        applications.app.bytetrade.io/owner: {{ .Release.Namespace | trimSuffix "-aimighty" }}
-        applications.app.bytetrade.io/raw-app-name: aimqwen3ttsvllm
-        io.bytetrade.app: "true"
     spec:
+      initContainers:
+      - name: check-auth
+        image: beclab/wait-for:0.1.0
+        command: ["true"]
       containers:
       # Container 1: vLLM-Omni TTS API
       - name: vllm-server

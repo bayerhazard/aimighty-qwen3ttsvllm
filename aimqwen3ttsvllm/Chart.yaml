@@ -2,8 +2,8 @@ apiVersion: v2
 name: aimqwen3ttsvllm
 description: AIM Qwen3-TTS 1.7B — Alibaba Qwen3-TTS-12Hz via vLLM-Omni, OpenAI-compatible /v1/audio/speech
 type: application
-version: 1.0.0
-appVersion: "1.0.0"
+version: 1.0.1
+appVersion: "1.0.1"
 keywords:
   - ai
   - tts
