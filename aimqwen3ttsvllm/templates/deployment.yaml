@@ -249,10 +249,6 @@ spec:
       labels:
         app: aimqwen3ttsvllm
     spec:
-      initContainers:
-      - name: check-auth
-        image: beclab/wait-for:0.1.0
-        command: ["true"]
       containers:
       # Container 1: vLLM-Omni TTS API
       - name: vllm-server

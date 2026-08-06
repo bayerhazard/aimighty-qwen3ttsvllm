@@ -11,7 +11,7 @@ metadata:
   description: Qwen3-TTS-12Hz-1.7B via vLLM-Omni — OpenAI-compatible /v1/audio/speech, 10 languages
   appid: aimqwen3ttsvllm
   title: AIM Qwen3 TTS 1.7B
-  version: '1.0.1'
+  version: '1.0.2'
   categories:
     - Audio
 
@@ -25,7 +25,7 @@ entrances:
     authLevel: internal
 
 spec:
-  versionName: '1.0.1'
+  versionName: '1.0.2'
   fullDescription: |
     **Qwen3-TTS-12Hz-1.7B** — Alibaba's latest open text-to-speech model, served via vLLM-Omni with a full OpenAI-compatible API.
 
@@ -54,10 +54,11 @@ spec:
     RAM: 8 GB, CPU: 2 cores
     Disk: 20 GB (model cache, HF_HOME)
   upgradeDescription: |
-    v1.0.1: Fix GPU binding + check-auth crash loop. Removed the bytetrade owner
-    label override (pod never matched its GPUBinding -> "insufficient GPUBindings
-    bound=0"), and defined the check-auth init container with command ["true"]
-    (webhook-injected wait-for crashed on authelia 400).
+    v1.0.2: Removed manual check-auth init container (caused "Duplicate value:
+    check-auth" with the webhook-injected one). Keep webhook injection like the
+    voxtral app; the earlier check-auth exit-1 was transient.
+    v1.0.1: Fix GPU binding: removed the bytetrade owner label override (pod never
+    matched its GPUBinding -> "insufficient GPUBindings bound=0").
     v1.0.0: Initial release — Qwen3-TTS-12Hz-1.7B-CustomVoice via vLLM-Omni v0.24.0, OpenAI-compatible /v1/audio/speech, Web Dashboard.
   developer: Aimighty
   website: https://github.com/bayerhazard/aimighty-qwen3ttsvllm
