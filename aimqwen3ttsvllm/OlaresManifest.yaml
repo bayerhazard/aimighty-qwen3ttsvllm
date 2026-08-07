@@ -8,10 +8,10 @@ workloadReplicas:
 metadata:
   name: aimqwen3ttsvllm
   icon: https://raw.githubusercontent.com/bayerhazard/aimighty-qwen3ttsvllm/main/icon.png
-  description: Qwen3-TTS-12Hz-1.7B via vLLM-Omni — OpenAI-compatible /v1/audio/speech, 10 languages
+  description: Qwen3-TTS 1.7B via vLLM-Omni — 9 speakers, 10 languages, low-latency streaming, OpenAI-compatible API
   appid: aimqwen3ttsvllm
-  title: AIM Qwen3 TTS 1.7B
-  version: '1.0.4'
+  title: AIM Qwen3 1.7B TTS
+  version: '26.08.1'
   categories:
     - Audio
 
@@ -19,13 +19,13 @@ entrances:
   - name: aimqwen3ttsvllm
     port: 8080
     host: aimqwen3ttsvllm
-    title: Qwen3-TTS Dashboard
+    title: AIM Qwen3 1.7B TTS
     icon: https://raw.githubusercontent.com/bayerhazard/aimighty-qwen3ttsvllm/main/icon.png
     openMethod: window
     authLevel: internal
 
 spec:
-  versionName: '1.0.4'
+  versionName: '26.08.1'
   fullDescription: |
     **Qwen3-TTS-12Hz-1.7B** — Alibaba's latest open text-to-speech model, served via vLLM-Omni with a full OpenAI-compatible API.
 
@@ -54,6 +54,7 @@ spec:
     RAM: 8 GB, CPU: 2 cores
     Disk: 20 GB (model cache, HF_HOME)
   upgradeDescription: |
+    v26.08.1: Unified naming — title "AIM Qwen3 1.7B TTS", English descriptions. Built for Olares 1.12.6.
     v1.0.4: Add --enforce-eager (stage-1 audio tokenizer CUDA graph capture grabbed
     ~15 GiB -> OOM). Disables graphs; fits on the shared GPU.
     v1.0.3: Lower VLLM_OMNI_GPU_UTIL 0.9 -> 0.3 (Qwen3 stage-0 grabbed ~21 GiB).
