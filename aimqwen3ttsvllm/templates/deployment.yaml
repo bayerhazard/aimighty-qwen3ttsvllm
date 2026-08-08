@@ -604,7 +604,6 @@ metadata:
   labels:
     app: aimqwen3ttsvllm
     applications.app.bytetrade.io/name: aimqwen3ttsvllm
-    applications.app.bytetrade.io/owner: {{ .Release.Namespace | trimSuffix "-aimighty" }}
     applications.app.bytetrade.io/raw-app-name: aimqwen3ttsvllm
 spec:
   replicas: {{ .Values.workloads.aimqwen3ttsvllm.replicaCount }}
@@ -618,9 +617,6 @@ spec:
     metadata:
       labels:
         app: aimqwen3ttsvllm
-        applications.authorization.bytetos.io/name: aimqwen3ttsvllm
-        applications.authorization.bytetos.io/owner: {{ .Release.Namespace | trimSuffix "-aimighty" }}
-        applications.authorization.bytetos.io/raw-app-name: aimqwen3ttsvllm
         io.bytetrade.app: "true"
     spec:
       containers:
