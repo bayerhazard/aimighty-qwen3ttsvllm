@@ -52,171 +52,538 @@ data:
     }
   index.html: |
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="de">
     <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Qwen3-TTS</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: #0f0f0f; color: #e0e0e0; min-height: 100vh;
-          display: flex; align-items: center; justify-content: center;
-        }
-        .container { width: 100%; max-width: 680px; padding: 2rem; }
-        h1 {
-          font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;
-          background: linear-gradient(135deg, #64748b, #3b82f6);
-          -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; }
-        textarea {
-          width: 100%; height: 110px; padding: 0.75rem; border-radius: 8px;
-          border: 1px solid #333; background: #1a1a1a; color: #e0e0e0;
-          font-size: 0.95rem; resize: vertical; outline: none;
-          transition: border-color 0.2s;
-        }
-        textarea:focus { border-color: #3b82f6; }
-        .controls { display: flex; gap: 0.75rem; margin-top: 1rem; align-items: center; }
-        select {
-          flex: 1; padding: 0.6rem 0.75rem; border-radius: 8px;
-          border: 1px solid #333; background: #1a1a1a; color: #e0e0e0;
-          font-size: 0.9rem; outline: none; cursor: pointer;
-        }
-        select:focus { border-color: #3b82f6; }
-        .instruct {
-          width: 100%; margin-top: 0.75rem; padding: 0.6rem 0.75rem;
-          border-radius: 8px; border: 1px solid #333; background: #1a1a1a;
-          color: #e0e0e0; font-size: 0.9rem; outline: none;
-        }
-        .instruct:focus { border-color: #3b82f6; }
-        button {
-          padding: 0.6rem 1.5rem; border-radius: 8px; border: none;
-          background: linear-gradient(135deg, #64748b, #3b82f6);
-          color: #fff; font-size: 0.9rem; font-weight: 500;
-          cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
-        }
-        button:hover { opacity: 0.9; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .status { margin-top: 1rem; font-size: 0.85rem; color: #888; min-height: 1.5rem; }
-        .status.error { color: #ef4444; }
-        .status.success { color: #22c55e; }
-        audio { width: 100%; margin-top: 1rem; border-radius: 8px; }
-        .health {
-          margin-top: 2rem; padding: 0.75rem; border-radius: 8px;
-          background: #1a1a1a; border: 1px solid #333; font-size: 0.8rem; color: #888;
-        }
-        .health span { color: #22c55e; }
-        .hint { color: #666; font-size: 0.78rem; margin-top: 0.4rem; }
-      </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIM Qwen3 1.7B TTS — Dashboard</title>
+    <style>
+    /* ============================================================
+       AIM Qwen3-1.7B TTS Dashboard
+       Design-Sprache: Rewind/Voxtral (Hanseatenblau + Gold-Akzent)
+       ============================================================ */
+    :root{
+      /* Surface-Scale (Navy) */
+      --b-25:#000714; --b-50:#010e1d; --b-100:#041120; --b-150:#081a2e;
+      --b-200:#10243c; --b-300:#1d3a5c; --b-400:#2f5178;
+      --b-500:#4a6c95; --b-600:#708bab; --b-700:#9bafc6;
+      --b-800:#c6d2e0; --b-900:#e6ebf1;
+
+      --gold:#c9a45c; --gold-hell:#d5b371; --gold-tief:#b28b42;
+      --marke:var(--gold); --marke-hell:var(--gold-hell); --marke-tief:var(--gold-tief);
+      --auf-marke:var(--b-25);
+
+      --bg:var(--b-50);
+      --surface:var(--b-100);
+      --surface2:var(--b-150);
+      --border:var(--b-300);
+      --border-soft:var(--b-200);
+      --text:var(--b-800);
+      --text-stark:#fff;
+      --text-dim:var(--b-500);
+      --accent:var(--marke);
+      --accent-hover:var(--marke-hell);
+
+      --success:#4ade80; --success-bg:color-mix(in oklab, #4ade80 12%, transparent);
+      --warning:#fbbf24; --warning-bg:color-mix(in oklab, #fbbf24 12%, transparent);
+      --error:#f87171;  --error-bg:color-mix(in oklab, #f87171 12%, transparent);
+      --info-bg:color-mix(in oklab, var(--marke) 12%, transparent);
+
+      --marke-flaeche:color-mix(in oklab, var(--marke) 12%, transparent);
+      --marke-rand:color-mix(in oklab, var(--marke) 44%, transparent);
+
+      --fokus:var(--marke-hell);
+
+      --schrift:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+      --mono:ui-monospace,'SF Mono','Fira Code',Menlo,Consolas,monospace;
+
+      --radius:8px;
+      --seite:clamp(1rem, 3.5vw, 2.5rem);
+      --inhalt:60rem;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+    body{
+      font-family:var(--schrift);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, color-mix(in oklab, var(--marke) 9%, transparent), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, color-mix(in oklab, var(--marke) 5%, transparent), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    :focus-visible{outline:2px solid var(--fokus);outline-offset:2px;border-radius:4px}
+
+    .container{width:min(100% - var(--seite)*2, var(--inhalt));margin-inline:auto;padding-block:24px}
+
+    .kicker{
+      display:inline-flex;align-items:center;gap:.55rem;
+      font-family:var(--mono);font-size:.68rem;font-weight:600;
+      letter-spacing:.18em;text-transform:uppercase;
+      color:var(--marke);margin-bottom:1.1rem;
+    }
+    .kicker::before{content:"";inline-size:1.4rem;block-size:1px;background:var(--marke-rand);display:block}
+
+    .header{
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      margin-bottom:1.75rem;padding-block:.25rem 1rem;
+      border-bottom:1px solid var(--border-soft);
+    }
+    .header h1{
+      font-size:clamp(1.4rem, 1.1rem + 1vw, 1.7rem);
+      font-weight:700;letter-spacing:-.02em;color:var(--text-stark);line-height:1.1;
+    }
+    .header h1::first-letter{color:var(--marke)}
+    .header .subtitle{font-size:.82rem;color:var(--text-dim);margin-top:.15rem}
+
+    .lang-toggle{
+      display:inline-flex;gap:2px;background:var(--surface);border:1px solid var(--border-soft);
+      border-radius:6px;padding:2px;flex-shrink:0;
+    }
+    .lang-toggle button{
+      border:none;background:transparent;color:var(--text-dim);
+      font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.1em;
+      padding:.3rem .6rem;border-radius:4px;cursor:pointer;transition:all .16s ease;
+    }
+    .lang-toggle button:hover{color:var(--text-stark)}
+    .lang-toggle button.active{background:var(--marke);color:var(--auf-marke)}
+
+    .card{
+      background:linear-gradient(180deg, var(--surface), var(--b-100));
+      border:1px solid var(--border-soft);
+      border-radius:var(--radius);
+      padding:1.1rem 1.2rem;
+      margin-bottom:16px;
+    }
+    .card-title{
+      font-size:.95rem;font-weight:600;color:var(--text-stark);
+      margin-bottom:14px;display:flex;align-items:center;gap:8px;
+    }
+    .card-title .icon{font-size:1.05rem;color:var(--marke)}
+
+    textarea{
+      width:100%;min-height:110px;padding:.75rem .85rem;border-radius:6px;
+      border:1px solid var(--border);background:var(--surface2);color:var(--text);
+      font-family:var(--schrift);font-size:.95rem;line-height:1.6;resize:vertical;outline:none;
+    }
+    textarea:focus{border-color:var(--marke)}
+    textarea::placeholder{color:var(--text-dim)}
+
+    select{
+      flex:1;padding:.55rem .7rem;border-radius:6px;
+      border:1px solid var(--border);background:var(--surface2);color:var(--text);
+      font-size:.9rem;outline:none;cursor:pointer;font-family:var(--schrift);
+    }
+    select:focus{border-color:var(--marke)}
+    select option{background:var(--surface)}
+    select.small{flex:none}
+
+    .controls{display:flex;gap:.75rem;margin-top:1rem;align-items:center}
+    .controls.wrap{flex-wrap:wrap}
+
+    input[type="text"], input[type="range"]{
+      font-family:var(--schrift);font-size:.9rem;color:var(--text);
+    }
+    .field{
+      flex:1;padding:.55rem .7rem;border-radius:6px;
+      border:1px solid var(--border);background:var(--surface2);color:var(--text);
+      font-size:.9rem;outline:none;font-family:var(--schrift);
+    }
+    .field:focus{border-color:var(--marke)}
+
+    .row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-top:.6rem}
+    .row label{font-size:.72rem;color:var(--text-dim);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+    .slider{flex:1;min-width:120px;accent-color:var(--marke)}
+    .slider-val{font-family:var(--mono);font-size:.8rem;color:var(--marke);min-width:2.5rem;text-align:right}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+      block-size:2.5rem;padding-inline:1.1rem;
+      border:1px solid var(--border);border-radius:6px;
+      background:var(--surface2);color:var(--text);
+      font-family:var(--schrift);font-size:.85rem;font-weight:600;line-height:1;
+      white-space:nowrap;cursor:pointer;user-select:none;
+      transition:background-color .16s ease,border-color .16s ease,color .16s ease;
+    }
+    .btn:hover{border-color:var(--marke-rand);background:var(--marke-flaeche);color:var(--text-stark)}
+    .btn.primary{background:var(--marke);border-color:var(--marke);color:var(--auf-marke)}
+    .btn.primary:hover{background:var(--marke-hell);border-color:var(--marke-hell)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}
+
+    .audio-wrap{
+      margin-top:1rem;padding:.9rem 1rem;border-radius:var(--radius);
+      background:var(--b-25);border:1px solid var(--border-soft);display:none;
+    }
+    .audio-wrap.show{display:block;animation:fade .3s ease}
+    @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+    .audio-wrap audio{width:100%;height:42px;border-radius:6px}
+    .audio-wrap .meta{
+      margin-top:.4rem;font-size:.72rem;color:var(--text-dim);font-family:var(--mono);
+    }
+
+    .status{margin-top:1rem;font-size:.85rem;color:var(--text-dim);min-height:1.5rem;display:flex;align-items:center;gap:8px}
+    .status.error{color:var(--error)}
+    .status.success{color:var(--success)}
+    .spinner{
+      display:inline-block;width:14px;height:14px;
+      border:2px solid var(--border);border-top-color:var(--marke);
+      border-radius:50%;animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:.75rem}
+    .info-item{background:var(--b-25);border:1px solid var(--border-soft);border-radius:6px;padding:.7rem .8rem}
+    .info-item .k{
+      font-size:.64rem;color:var(--text-dim);text-transform:uppercase;
+      letter-spacing:.14em;font-family:var(--mono);font-weight:600;margin-bottom:.25rem;
+    }
+    .info-item .v{font-size:.85rem;color:var(--text-stark);font-weight:500}
+
+    .file-zone{
+      border:1px dashed var(--border);border-radius:6px;padding:.7rem .9rem;
+      font-size:.85rem;color:var(--text-dim);background:var(--surface2);
+      cursor:pointer;transition:border-color .16s ease,color .16s ease;
+    }
+    .file-zone:hover{border-color:var(--marke-rand);color:var(--text)}
+    .file-zone .name{font-family:var(--mono);font-size:.75rem;color:var(--marke);display:inline}
+
+    .foot{
+      margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-soft);
+      display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+      font-size:.74rem;color:var(--text-dim);font-family:var(--mono);
+    }
+    .foot .health{display:inline-flex;align-items:center;gap:6px}
+    .foot .health .ok{color:var(--success)}
+    .foot .health .bad{color:var(--error)}
+    .foot .cfg{display:flex;gap:14px;flex-wrap:wrap}
+    .foot .cfg span{white-space:nowrap}
+    .foot .cfg b{color:var(--text);font-weight:600}
+
+    .hidden{display:none !important}
+
+    @media (max-width:600px){
+      .header{flex-direction:column;gap:12px;align-items:flex-start}
+      .controls{flex-wrap:wrap}
+      .controls select{flex:none;width:100%}
+      .btn{flex:1}
+    }
+
+    ::-webkit-scrollbar{width:8px;height:8px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--text-dim)}
+
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none !important;transition:none !important}
+    }
+    </style>
     </head>
     <body>
-      <div class="container">
-        <h1>Qwen3-TTS 1.7B</h1>
-        <p class="subtitle">Alibaba Qwen3-TTS-12Hz via vLLM-Omni — 10 languages, instruction control</p>
+    <div class="container">
 
-        <textarea id="textInput" placeholder="Enter text to synthesize...">Guten Tag! Ich bin Qwen3-TTS, ein mehrsprachiges Text-to-Speech Modell von Alibaba.</textarea>
-
-        <div class="controls">
-          <select id="voiceSelect">
-            <option value="vivian">Vivian — bright young female (ZH)</option>
-            <option value="serena">Serena — warm gentle female (ZH)</option>
-            <option value="uncle_fu">Uncle Fu — low mellow male (ZH)</option>
-            <option value="dylan">Dylan — Beijing male (ZH)</option>
-            <option value="eric">Eric — Sichuan male (ZH)</option>
-            <option value="ryan">Ryan — dynamic male (EN)</option>
-            <option value="aiden">Aiden — sunny American male (EN)</option>
-            <option value="ono_anna">Ono Anna — playful female (JA)</option>
-            <option value="sohee">Sohee — warm female (KO)</option>
-          </select>
-          <select id="langSelect">
-            <option value="Auto">Auto</option>
-            <option value="Chinese">中文</option>
-            <option value="English">English</option>
-            <option value="German" selected>Deutsch</option>
-            <option value="Japanese">日本語</option>
-            <option value="Korean">한국어</option>
-            <option value="French">Français</option>
-            <option value="Russian">Русский</option>
-            <option value="Portuguese">Português</option>
-            <option value="Spanish">Español</option>
-            <option value="Italian">Italiano</option>
-          </select>
+      <div class="header">
+        <div>
+          <h1>Qwen3 1.7B TTS</h1>
+          <div class="subtitle" data-i18n="subtitle">Alibaba Qwen3-TTS-12Hz via vLLM-Omni — 9 Stimmen, 10 Sprachen, 24 kHz</div>
         </div>
-
-        <input class="instruct" id="instructInput" placeholder="Optional: style instructions (e.g. 'Sprich sehr fröhlich und schnell')">
-
-        <div class="controls">
-          <button id="generateBtn" onclick="generateSpeech()">Generate</button>
+        <div class="lang-toggle" role="group" aria-label="Sprache">
+          <button type="button" id="langDE" class="active">DE</button>
+          <button type="button" id="langEN">EN</button>
         </div>
-        <div class="hint">Tip: the speaker above picks the timbre; the instruction field steers emotion, speed and tone.</div>
-
-        <div class="status" id="status"></div>
-        <div id="audioContainer"></div>
-
-        <div class="health" id="healthInfo">Checking health...</div>
       </div>
-      <script>
-        const statusEl = document.getElementById('status');
-        const audioContainer = document.getElementById('audioContainer');
 
-        async function checkHealth() {
-          try {
-            const res = await fetch('/health');
-            await res.json();
-            document.getElementById('healthInfo').innerHTML = 'Status: <span>OK</span>';
-          } catch (e) {
-            document.getElementById('healthInfo').innerHTML = 'Status: <span style="color:#ef4444">UNREACHABLE</span>';
-          }
+      <span class="kicker" data-i18n="kicker">Textsynthese</span>
+
+      <!-- Karte 1: Synthese -->
+      <div class="card">
+        <div class="card-title"><span class="icon">●</span><span data-i18n="ttsTitle">Synthese</span></div>
+
+        <select id="taskSelect" aria-label="Task">
+          <option value="CustomVoice" data-i18n-opt="taskCustom">CustomVoice — via Stimme</option>
+          <option value="VoiceDesign" data-i18n-opt="taskDesign">VoiceDesign — via Beschreibung</option>
+        </select>
+
+        <textarea id="textInput" data-i18n-ph="ttsPlaceholder">Hallo, das ist ein Test der Qwen3-Sprachsynthese.</textarea>
+
+        <div id="voiceRow" class="row">
+          <label data-i18n="voiceLabel">Stimme</label>
+          <select id="voiceSelect" aria-label="Stimme"></select>
+        </div>
+
+        <div class="controls wrap">
+          <select id="langSelect" aria-label="Sprache">
+            <option value="Auto" data-i18n-opt="langAuto">Auto</option>
+            <option value="Chinese" data-i18n-opt="langZh">中文</option>
+            <option value="English" data-i18n-opt="langEn">English</option>
+            <option value="German" selected data-i18n-opt="langDe">Deutsch</option>
+            <option value="Japanese" data-i18n-opt="langJa">日本語</option>
+            <option value="Korean" data-i18n-opt="langKo">한국어</option>
+            <option value="French" data-i18n-opt="langFr">Français</option>
+            <option value="Russian" data-i18n-opt="langRu">Русский</option>
+            <option value="Portuguese" data-i18n-opt="langPt">Português</option>
+            <option value="Spanish" data-i18n-opt="langEs">Español</option>
+            <option value="Italian" data-i18n-opt="langIt">Italiano</option>
+          </select>
+          <select id="fmtSelect" aria-label="Format">
+            <option value="wav">wav</option>
+            <option value="mp3">mp3</option>
+            <option value="flac">flac</option>
+            <option value="aac">aac</option>
+            <option value="opus">opus</option>
+            <option value="pcm">pcm</option>
+          </select>
+          <button class="btn primary" id="generateBtn" data-i18n="genBtn">Synthese starten</button>
+        </div>
+
+        <div class="row">
+          <label data-i18n="instrLabel">Stil / Emotion</label>
+          <input type="text" class="field" id="instrInput" data-i18n-ph="instrPlaceholder">
+        </div>
+
+        <div class="row">
+          <label data-i18n="speedLabel">Tempo</label>
+          <input type="range" class="slider" id="speedSlider" min="0.25" max="4.0" step="0.05" value="1.0">
+          <span class="slider-val" id="speedVal">1.00x</span>
+        </div>
+
+        <div class="hint" style="color:var(--text-dim);font-size:.78rem;margin-top:.5rem" data-i18n="ttsHint">CustomVoice: Stimme auswählen &amp; optional Stil angeben. VoiceDesign: Stil ist Pflicht.</div>
+      </div>
+
+      <!-- Karte 2: Service -->
+      <div class="card">
+        <div class="card-title"><span class="icon">▤</span><span data-i18n="svcTitle">Service</span></div>
+        <div class="info-grid">
+          <div class="info-item"><div class="k" data-i18n="svcEngine">Engine</div><div class="v">vLLM-Omni v0.24.0</div></div>
+          <div class="info-item"><div class="k" data-i18n="svcApi">API</div><div class="v">POST /v1/audio/speech</div></div>
+          <div class="info-item"><div class="k" data-i18n="svcVoices">Stimmen</div><div class="v" id="voiceCount">9</div></div>
+          <div class="info-item"><div class="k" data-i18n="svcFmt">Format</div><div class="v">24 kHz WAV</div></div>
+        </div>
+      </div>
+
+      <div class="status" id="status"></div>
+      <div class="audio-wrap" id="audioWrap">
+        <audio id="player" controls></audio>
+        <div class="size" id="audioSize"></div>
+      </div>
+
+      <div class="foot">
+        <div class="health" id="healthInfo"><span data-i18n="healthChecking">Status wird geprüft…</span></div>
+        <div class="cfg">
+          <span><b data-i18n="cfgModel">Modell</b>: qwen3-tts</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    /* ===== i18n DE/EN ===== */
+    const I18N = {
+      de: {
+        subtitle: 'Alibaba Qwen3 via vLLM-Omni — 9 Stimmen, 10 Sprachen, 24 kHz',
+        kicker: 'Textsynthese',
+        ttsTitle: 'Synthese',
+        ttsPlaceholder: 'Text zum Sprechen eingeben…',
+        ttsHint: 'CustomVoice: Stimme wählen & optional Stil angeben. VoiceDesign: Stil ist Pflicht.',
+        taskCustomVoice: 'CustomVoice — via Stimme',
+        taskDesign: 'VoiceDesign — via Beschreibung',
+        voiceLabel: 'Stimme',
+        instrLabel: 'Stil / Emotion',
+        instrPlaceholder: 'Optional, z. B. „Sprich sehr fröhlich und schnell“',
+        speedLabel: 'Tempo',
+        langAuto: 'Auto', langZh: '中文', langEn: 'English', langDe: 'Deutsch',
+        langJa: '日本語', langKo: '한국어', langFr: 'Français', langRu: 'Русский',
+        langPt: 'Português', langEs: 'Español', langIt: 'Italiano',
+        svcTitle: 'Service', svcEngine: 'Engine', svcApi: 'API', svcVoices: 'Stimmen', svcFmt: 'Format',
+        genBtn: 'Synthese starten', genBtnBusy: 'Synthese läuft…',
+        healthChecking: 'Status wird geprüft…', healthOk: 'Bereit', healthBad: 'Nicht erreichbar',
+        cfgModel: 'Modell',
+        errNoText: 'Bitte zuerst Text eingeben.', errNoInstr: 'VoiceDesign erfordert eine Stimmen-Beschreibung.',
+        generating: 'Audio wird erzeugt…', done: 'Fertig', size: 'Größe', emptyAudio: '(leeres Audio)',
+      },
+      en: {
+        subtitle: 'Alibaba Qwen3 via vLLM-Omni — 9 voices, 10 languages, 24 kHz',
+        kicker: 'Text Synthesis',
+        ttsTitle: 'Synthesis',
+        ttsPlaceholder: 'Enter text to synthesize…',
+        ttsHint: 'CustomVoice: pick a voice, style optional. VoiceDesign: style is required.',
+        taskCustomVoice: 'CustomVoice — via voice',
+        taskDesign: 'VoiceDesign — via description',
+        voiceLabel: 'Voice',
+        instrLabel: 'Style / Emotion',
+        instrPlaceholder: 'Optional, e.g. "Speak very cheerfully and fast"',
+        speedLabel: 'Speed',
+        langAuto: 'Auto', langZh: '中文', langEn: 'English', langDe: 'Deutsch',
+        langJa: '日本語', langKo: '한국어', langFr: 'Français', langRu: 'Русский',
+        langPt: 'Português', langEs: 'Español', langIt: 'Italiano',
+        svcTitle: 'Service', svcEngine: 'Engine', svcApi: 'API', svcVoices: 'Voices', svcFmt: 'Format',
+        genBtn: 'Generate speech', genBtnBusy: 'Generating…',
+        healthChecking: 'Checking status…', healthOk: 'Ready', healthBad: 'Unreachable',
+        cfgModel: 'Model',
+        errNoText: 'Please enter some text first.', errEmptyInstr: 'VoiceDesign requires a voice description.',
+        generating: 'Generating audio…', done: 'Done', size: 'Size', emptyAudio: '(empty audio)',
+      }
+    };
+
+    let LANG = 'de';
+    const I18N_OPT = {};
+
+    function applyLang() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N[LANG][key]) el.textContent = I18N[LANG][key];
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (I18N[LANG][key]) el.placeholder = I18N[LANG][key];
+      });
+      document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-opt');
+        if (I18N[LANG][key]) el.textContent = I18N[LANG][key];
+      });
+      document.getElementById('langDE').classList.toggle('active', LANG === 'de');
+      document.getElementById('langEN').classList.toggle('active', LANG === 'en');
+      document.documentElement.lang = LANG === 'de' ? 'de' : 'en';
+    }
+    document.getElementById('langDE').addEventListener('click', () => { LANG = 'de'; applyLang(); });
+    document.getElementById('langEN').addEventListener('click', () => { LANG = 'en'; applyLang(); });
+    applyLang();
+
+    /* ===== API-Basis ===== */
+    const API_URL = window.location.origin + '/v1/audio/speech';
+    const VOICES_URL = window.location.origin + '/v1/audio/voices';
+    const DEFAULT_VOICES = ['vivian','serena','uncle_fu','dylan','eric','ryan','aiden','ono_anna','sohee'];
+
+    /* ===== Elemente ===== */
+    const statusEl = document.getElementById('status');
+    const audioWrap = document.getElementById('audioWrap');
+    const player = document.getElementById('player');
+    const audioSize = document.getElementById('audioSize');
+    const textInput = document.getElementById('textInput');
+    const taskSelect = document.getElementById('taskSelect');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const voiceWrap = document.getElementById('voiceRow');
+    const langSelect = document.getElementById('langSelect');
+    const fmtSelect = document.getElementById('fmtSelect');
+    const instrInput = document.getElementById('instrInput');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedVal = document.getElementById('speedVal');
+    const generateBtn = document.getElementById('generateBtn');
+
+    /* ===== Task-Umschaltung ===== */
+    function onTaskChange() {
+      const t = taskSelect.value;
+      voiceWrap.classList.toggle('hidden', t !== 'CustomVoice');
+      statusEl.className = 'status';
+      statusEl.textContent = '';
+    }
+    taskSelect.addEventListener('change', onTaskChange);
+
+    speedSlider.addEventListener('input', () => { speedVal.textContent = (+speedSlider.value).toFixed(2) + 'x'; });
+
+    /* ===== Stimmen vom Server ===== */
+    async function loadVoices() {
+      try {
+        const res = await fetch(VOICES_URL);
+        if (!res.ok) throw new Error('http ' + res.status);
+        const data = await res.json();
+        const voices = (data && data.voices && data.voices.length) ? data.voices : DEFAULT_EMPTY;
+        voiceSelect.innerHTML = voices.map(v => '<option value="' + v + '">' + v + '</option>').join('');
+        document.getElementById('voiceCount').textContent = voices.length;
+      } catch (e) {
+        voiceSelect.innerHTML = DEFAULT_EMPTY.map(v => '<option value="' + v + '">' + v + '</option>').join('');
+      }
+    }
+    const DEFAULT_EMPTY = DEFAULT_VOICES;
+
+    function setStatus(cls, msg) {
+      statusEl.className = 'status' + (cls ? ' ' + cls : '');
+      statusEl.textContent = msg;
+    }
+    function setLoading(msg) {
+      statusEl.className = 'status';
+      statusEl.innerHTML = '<span class="spinner"></span>' + msg;
+    }
+
+    /* ===== Health ===== */
+    async function checkHealth() {
+      try {
+        const res = await fetch('/health');
+        await res.json();
+        document.getElementById('healthInfo').innerHTML =
+          '<span class="ok">●</span> <span>' + I18N[LANG].healthOk + '</span>';
+      } catch (e) {
+        document.getElementById('healthInfo').innerHTML =
+          '<span class="bad">●</span> <span>' + I18N[LANG].healthBad + '</span>';
+      }
+    }
+
+    /* ===== Synthese ===== */
+    async function generateSpeech() {
+      const text = textInput.value.trim();
+      const task = taskSelect.value;
+      if (!text) { setStatus('error', I18N[LANG].errNoText); return; }
+
+      const payload = {
+        input: text,
+        response_format: fmtSelect.value,
+        stream: false,
+        speed: +speedSlider.value,
+        language: langSelect.value,
+      };
+      if (task !== 'Auto' && task) payload.task_type = task;
+
+      if (task === 'CustomVoice') {
+        payload.voice = voiceSelect.value;
+        if (instrInput.value.trim()) payload.instructions = instrInput.value.trim();
+      } else if (task === 'VoiceDesign') {
+        if (!instrInput.value.trim()) { setStatus('error', I18N[LANG].errEmptyInstr); return; }
+        payload.instructions = instrInput.value.trim();
+      }
+
+      generateBtn.disabled = true;
+      generateBtn.textContent = I18N[LANG].genBtnBusy;
+      audioWrap.classList.remove('show');
+      setLoading(I18N[LANG].generating);
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || err.message || ('HTTP ' + res.status));
         }
+        const blob = await res.blob();
+        if (blob.size === 0) { setStatus('error', I18N[LANG].emptyAudio); return; }
+        const url = URL.createObjectURL(blob);
+        player.src = url;
+        audioSize.textContent = I18N[LANG].size + ': ' + (blob.size / 1024).toFixed(0) + ' KB · ' + fmtSelect.value.toUpperCase();
+        audioWrap.classList.add('show');
+        player.play().catch(() => {});
+        setStatus('success', I18N[LANG].done);
+      } catch (e) {
+        setStatus('error', e.message);
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = I18N[LANG].genBtn;
+      }
+    }
 
-        async function generateSpeech() {
-          const text = document.getElementById('textInput').value.trim();
-          const voice = document.getElementById('voiceSelect').value;
-          const language = document.getElementById('langSelect').value;
-          const instructions = document.getElementById('instructInput').value.trim();
-          const btn = document.getElementById('generateBtn');
+    generateBtn.addEventListener('click', generateSpeech);
+    onTaskChange();
 
-          if (!text) { statusEl.className = 'status error'; statusEl.textContent = 'Please enter some text.'; return; }
-
-          btn.disabled = true;
-          statusEl.className = 'status';
-          statusEl.textContent = 'Generating...';
-          audioContainer.innerHTML = '';
-
-          const payload = { model: 'qwen3-tts', input: text, voice: voice };
-          if (language && language !== 'Auto') payload.language = language;
-          if (instructions) payload.instructions = instructions;
-
-          try {
-            const res = await fetch('/v1/audio/speech', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-
-            if (!res.ok) {
-              const err = await res.json().catch(() => ({}));
-              throw new Error(err.detail || `HTTP ${res.status}`);
-            }
-
-            const blob = await res.blob();
-            const url = URL.createObjectURL(blob);
-            audioContainer.innerHTML = '<audio controls autoplay src="' + url + '"></audio>';
-            statusEl.className = 'status success';
-            statusEl.textContent = 'Done! (' + (blob.size / 1024).toFixed(0) + ' KB)';
-          } catch (e) {
-            statusEl.className = 'status error';
-            statusEl.textContent = 'Error: ' + e.message;
-          } finally {
-            btn.disabled = false;
-          }
-        }
-
-        checkHealth();
-        setInterval(checkHealth, 30000);
-      </script>
+    loadVoices();
+    checkHealth();
+    setInterval(checkHealth, 30000);
+    </script>
     </body>
     </html>
 ---
@@ -236,6 +603,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: aimqwen3ttsvllm
+    applications.app.bytetrade.io/name: aimqwen3ttsvllm
+    applications.app.bytetrade.io/owner: {{ .Release.Namespace | trimSuffix "-aimighty" }}
+    applications.app.bytetrade.io/raw-app-name: aimqwen3ttsvllm
 spec:
   replicas: {{ .Values.workloads.aimqwen3ttsvllm.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
@@ -248,6 +618,10 @@ spec:
     metadata:
       labels:
         app: aimqwen3ttsvllm
+        applications.authorization.bytetos.io/name: aimqwen3ttsvllm
+        applications.authorization.bytetos.io/owner: {{ .Release.Namespace | trimSuffix "-aimighty" }}
+        applications.authorization.bytetos.io/raw-app-name: aimqwen3ttsvllm
+        io.bytetrade.app: "true"
     spec:
       containers:
       # Container 1: vLLM-Omni TTS API
@@ -265,14 +639,19 @@ spec:
           - "8000"
           - "--gpu-memory-utilization"
           - "$(VLLM_OMNI_GPU_UTIL)"
+          - "--max-model-len"
+          - "4096"
+          - "--kv-cache-dtype"
+          - "fp8"
           - "--trust-remote-code"
-          - "--enforce-eager"
           - "--omni"
         env:
           - name: HF_HOME
             value: {{ .Values.env.HF_HOME | quote }}
           - name: VLLM_OMNI_GPU_UTIL
             value: {{ .Values.env.VLLM_OMNI_GPU_UTIL | quote }}
+          - name: CUDA_DEVICE_MEMORY_LIMIT_0
+            value: {{ .Values.env.CUDA_DEVICE_MEMORY_LIMIT_0 | quote }}
           - name: PYTORCH_CUDA_ALLOC_CONF
             value: "expandable_segments:True"
           - name: GPU_TYPE

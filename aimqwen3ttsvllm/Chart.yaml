@@ -1,21 +1,22 @@
 apiVersion: v2
-name: aimqwen3ttsvllm
-description: Qwen3-TTS 1.7B via vLLM-Omni — 9 speakers, 10 languages, low-latency streaming, OpenAI-compatible API
-type: application
-version: 26.08.1
-appVersion: "26.08.1"
-keywords:
-  - ai
-  - tts
-  - text-to-speech
-  - qwen
-  - qwen3-tts
-  - alibaba
-  - nvidia
-  - vllm
+appVersion: 26.08.4
+description: AIM Qwen3-TTS 1.7B — Alibaba Qwen3-TTS-12Hz via vLLM-Omni, OpenAI-compatible
+  /v1/audio/speech
 home: https://github.com/bayerhazard/aimighty-qwen3ttsvllm
-sources:
-  - https://github.com/bayerhazard/aimighty-qwen3ttsvllm
+keywords:
+- ai
+- tts
+- text-to-speech
+- qwen
+- qwen3-tts
+- alibaba
+- nvidia
+- vllm
 maintainers:
-  - name: Aimighty
-    email: admin@aimighty.local
+- email: admin@aimighty.local
+  name: Aimighty
+name: aimqwen3ttsvllm
+sources:
+- https://github.com/bayerhazard/aimighty-qwen3ttsvllm
+type: application
+version: 26.08.4

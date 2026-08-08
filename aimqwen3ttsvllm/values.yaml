@@ -34,7 +34,8 @@ env:
   MODEL_NAME: Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice
   MODEL_ALIAS: qwen3-tts
   HF_HOME: /models/huggingface
-  VLLM_OMNI_GPU_UTIL: "0.3"
+  VLLM_OMNI_GPU_UTIL: "0.60"
+  CUDA_DEVICE_MEMORY_LIMIT_0: 8192m
 volumes:
   dshm:
     sizeLimit: 2Gi
