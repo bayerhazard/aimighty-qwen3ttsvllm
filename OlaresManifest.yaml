@@ -11,7 +11,7 @@ metadata:
   description: Qwen3-TTS-12Hz-1.7B via vLLM-Omni — OpenAI-compatible
   appid: aimqwen3ttsvllm
   title: AIM Qwen3 TTS 1.7B
-  version: '26.08.6'
+  version: '26.08.7'
   categories:
     - Audio
 
@@ -25,7 +25,7 @@ entrances:
     authLevel: internal
 
 spec:
-  versionName: '26.08.6'
+  versionName: '26.08.7'
   fullDescription: |
     **Qwen3-TTS-12Hz-1.7B-CustomVoice** — Text-to-speech served via vLLM-Omni with a full OpenAI-compatible API.
 
@@ -54,7 +54,7 @@ spec:
     RAM: 8 GB, CPU: 2 cores
     Disk: 20 GB (model cache, HF_HOME)
   upgradeDescription: |
-    v26.08.6: Fixed owner labels in chart (app-service now sets correct owner), 8 GB VRAM slice — max_model_len 4096 (~5 min audio),
+    v26.08.7: Re-added --enforce-eager (CUDA graph capture OOM'd on 8 GB slice), owner labels fixed, 8 GB VRAM slice — max_model_len 4096 (~5 min audio),
     fp8 KV cache. Built for Olares 1.12.6.
   developer: Aimighty
   website: https://github.com/bayerhazard/aimighty-qwen3ttsvllm

@@ -640,6 +640,7 @@ spec:
           - "--kv-cache-dtype"
           - "fp8"
           - "--trust-remote-code"
+          - "--enforce-eager"
           - "--omni"
         env:
           - name: HF_HOME
