@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 26.08.4
+appVersion: 26.08.5
 description: AIM Qwen3-TTS 1.7B — Alibaba Qwen3-TTS-12Hz via vLLM-Omni, OpenAI-compatible
   /v1/audio/speech
 home: https://github.com/bayerhazard/aimighty-qwen3ttsvllm
@@ -19,4 +19,4 @@ name: aimqwen3ttsvllm
 sources:
 - https://github.com/bayerhazard/aimighty-qwen3ttsvllm
 type: application
-version: 26.08.4
+version: 26.08.5
